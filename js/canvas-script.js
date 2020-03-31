@@ -2,38 +2,54 @@ document.addEventListener('DOMContentLoaded', function () {
   let canvas = document.getElementById('canvas')
   let context = canvas.getContext('2d')
 
-  let ball = new Ball(30, 'green')
-  ball.x = 100
-  ball.y = 150
-  ball.context = context
-  ball.draw()
+  let g = 0.098 // gravity
+
+  // Ball 1
+  let ball1 = new Ball(20, 'blue')
+  ball1.x = 100
+  ball1.y = 80
+  ball1.context = context
+
+  // Ball 2
+  let ball2 = new Ball(20, 'green')
+  ball2.x = 150
+  ball2.y = 80
+  ball2.context = context
+
+  // Ball 3
+  let ball3 = new Ball(20, 'pink')
+  ball3.x = 500
+  ball3.y = 400
+  ball3.context = context
 
   window.requestAnimationFrame(animationLoop)
 
-  // Velocity
-  ball.vx = 1
-  ball.vy = -1.5
-
-  // Aceeleration
-  let ax = 0.05
-  let ay = 0.05
+  // velocity
+  ball1.vy = 0
+  ball2.vy = 2
+  ball3.vy = -7
 
   function animationLoop () {
     // clear canvas
     context.clearRect(0, 0, canvas.width, canvas.height)
 
     // update
+    // Y1
+    ball1.vy += g
+    ball1.y += ball1.vy
 
-    // X
-    // ball.vx += ax
-    // ball.x += ball.vx
+    // Y2
+    ball2.vy += g
+    ball2.y += ball2.vy
 
-    // Y
-    ball.vy += ay
-    ball.y += ball.vy
+    // Y3
+    ball3.vy += g
+    ball3.y += ball3.vy
 
     // draw
-    ball.draw()
+    ball1.draw()
+    ball2.draw()
+    ball3.draw()
 
     // Animate
     window.requestAnimationFrame(animationLoop)
