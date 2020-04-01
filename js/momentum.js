@@ -1,34 +1,64 @@
-// Momentum - it's a product of MASS and Velocity
-
-// p - momentum
-// m - mass
-// v - velocity
-
-// p = mv
-
 document.addEventListener('DOMContentLoaded', function () {
+  // Definition
   let canvas = document.getElementById('canvas')
   let context = canvas.getContext('2d')
 
-  let g = 0.098 // gravity
-
-  // Ball 1
-  let ball1 = new Ball(20, 'blue')
-  ball1.x = 90
-  ball1.y = 50
+  // Large Ball
+  let ball1 = new Ball(50, 'blue')
+  ball1.x = 290
+  ball1.y = 250
+  ball1.m = 100
   ball1.context = context
+  ball1.draw()
 
-  //   window.requestAnimationFrame(animationLoop)
+  // Small Ball
+  let ball2 = new Ball(30, 'green')
+  ball2.x = 550
+  ball2.y = 250
+  ball2.m = 6
+  ball2.context = context
+  ball2.draw()
 
-  // velocity
+  window.requestAnimationFrame(animationLoop)
+
+  // Velocity
+  ball1.vx = 5
+  ball2.vx = -10
 
   function animationLoop () {
-    // clear canvas
+    // Clear Canvas
     context.clearRect(0, 0, canvas.width, canvas.height)
 
-    // update
+    // Update
+    ball1.x += ball1.vx
+    ball2.x += ball2.vx
 
-    // draw
+    // Detect Ball Collisions
+    if (Math.abs(ball1.x - ball2.x) < ball1.r + ball2.r) {
+      // New Velocity of Ball 1 After Collision
+      let v1 = ((ball1.m - ball2.m) * ball1.vx) / (ball1.m + ball2.m)
+      v1 += (2 * ball2.m * ball2.vx) / (ball1.m + ball2.m)
+
+      // New Velocity of Ball 2 After Collision
+      let v2 = ((ball2.m - ball1.m) * ball2.vx) / (ball2.m + ball1.m)
+      v2 += (2 * ball1.m * ball1.vx) / (ball1.m + ball2.m)
+
+      ball1.vx = v1
+      ball2.vx = v2
+    }
+
+    // Detect Edge Collisions
+    if (ball1.x + ball1.r > canvas.width || ball1.x - ball1.r < 0) {
+      ball1.vx *= -1
+    }
+
+    if (ball2.x + ball2.r > canvas.width || ball2.x - ball2.r < 0) {
+      ball2.vx *= -1
+    }
+
+    // Draw
+    ball1.draw()
+    ball2.draw()
 
     // Animate
     window.requestAnimationFrame(animationLoop)
